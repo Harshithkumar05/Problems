@@ -1,0 +1,127 @@
+Given an integer array nums, return the number of subarrays filled with 0.
+
+A subarray is a contiguous non-empty sequence of elements within an array.
+
+ 
+
+Example 1:
+
+Input: nums = [1,3,0,0,2,0,0,4]
+Output: 6
+Explanation: 
+There are 4 occurrences of [0] as a subarray.
+There are 2 occurrences of [0,0] as a subarray.
+There is no occurrence of a subarray with a size more than 2 filled with 0. Therefore, we return 6.
+Example 2:
+
+Input: nums = [0,0,0,2,0,0]
+Output: 9
+Explanation:
+There are 5 occurrences of [0] as a subarray.
+There are 3 occurrences of [0,0] as a subarray.
+There is 1 occurrence of [0,0,0] as a subarray.
+There is no occurrence of a subarray with a size more than 3 filled with 0. Therefore, we return 9.
+Example 3:
+
+Input: nums = [2,10,2019]
+Output: 0
+Explanation: There is no subarray filled with 0. Therefore, we return 0.
+ 
+
+Constraints:
+
+1 <= nums.length <= 105
+-109 <= nums[i] <= 109
+
+solution
+
+
+🔹 Problem Description:
+You are given an integer array nums. You need to return the number of subarrays that are completely filled with 0.
+
+A subarray is a contiguous part of the array.
+
+Subarrays are counted separately even if they have the same content, as long as their positions differ.
+
+Intuition
+Whenever we encounter consecutive zeros in the array:
+
+A single zero contributes 1 subarray ([0]).
+
+Two consecutive zeros contribute 3 subarrays ([0], [0], [0,0]).
+
+Three consecutive zeros contribute 6 subarrays ([0], [0], [0], [0,0], [0,0], [0,0,0]).
+
+👉 In general, for a block of length k consisting only of zeros, the total number of zero-filled subarrays is:k⋅(k+1)/2
+​
+
+So the solution boils down to:
+
+Traverse the array.
+
+Count lengths of consecutive 0s.
+
+For each block of zeros, add k*(k+1)/2 to the answer.
+
+Approach
+Initialize ans = 0 and curr = 0 (to store length of current zero streak).
+
+Traverse through the array:
+
+If current element is 0, increment curr.
+
+If current element is non-zero:
+
+Add (curr * (curr+1))/2 to ans.
+
+Reset curr = 0.
+
+After loop, add the last block of zeros (if any).
+
+Return ans.
+
+🔹 Example Walkthrough
+Example 1:
+nums = [1,3,0,0,2,0,0,4]
+
+[0] at index 2
+
+[0] at index 3
+
+[0,0] (from index 2–3)
+
+[0] at index 5
+
+[0] at index 6
+
+[0,0] (from index 5–6)
+
+✅ Total = 6
+
+Complexity
+Time complexity:O(n) → Single traversal of array.
+Space complexity: O(1) extra space.
+🌱 Every upvote helps someone else grow. Thanks!
+
+Code
+
+class Solution {
+    public long zeroFilledSubarray(int[] nums) {
+        long ans = 0;
+        int n = nums.length,curr = 0;
+        for(int i=0;i<n;i++)
+        {
+            if(nums[i] == 0)
+            {
+                curr++;
+            }
+            else
+            {
+                ans += (1L * curr*(curr+1)/2);
+                curr = 0;
+            }
+        }
+        ans += (1L * curr*(curr+1)/2);
+        return ans;
+    }
+}
